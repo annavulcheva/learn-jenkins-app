@@ -13,13 +13,6 @@ pipeline {
                     ls -la
                     node --version
                     npm --version
-                    echo "=== WHERE AM I? ==="
-                    pwd
-                    ls -la
-                    echo "=== package.json used by CI ==="
-                    cat package.json
-                    echo "=== lock header used by CI ==="
-                    head -n 30 package-lock.json || true
                     npm ci
                     npm run build
                 '''
@@ -48,7 +41,7 @@ pipeline {
         stage('E2E Tests') {
             agent {
                 docker {
-                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                    image 'mcr.microsoft.com/playwright:v1.57.0-jammy'
                     reuseNode true
                 }
             }
