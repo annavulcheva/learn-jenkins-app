@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+    environment {
+        BUILD_FILE_NAME = 'build'
+    }
     stages {
         stage('Build') {
             agent {
@@ -22,6 +24,9 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Running tests inside Docker container'
+                sh '''
+                    grep index.html $BUILD_FILE_NAME
+                '''
             }
         }
     }
