@@ -18,40 +18,45 @@ pipeline {
                 '''
             }
         }
-        stage('Test') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
-            steps {
-                echo 'Running tests inside Docker container'
-                script {
-                    def path = "build/index.html"
-                    if (fileExists(path)) {
-                        echo "${path} exists."
-                    } else {
-                        error "${path} does not exist."
+    }
+
+    stage('Run Tests') {
+        parallel {
+            stage('Unit Tests') {
+                agent {
+                    docker {
+                        image 'node:18-alpine'
+                        reuseNode true
                     }
                 }
-                sh 'npm test'
-            }
-        }
-        stage('E2E Tests') {
-            agent {
-                docker {
-                    image 'mcr.microsoft.com/playwright:v1.57.0-jammy'
-                    reuseNode true
+                steps {
+                    echo 'Running tests inside Docker container'
+                    script {
+                        def path = "build/index.html"
+                        if (fileExists(path)) {
+                            echo "${path} exists."
+                        } else {
+                            error "${path} does not exist."
+                        }
+                    }
+                    sh 'npm test'
                 }
             }
-            steps {
-                sh '''
-                    npm install serve
-                    node_modules/.bin/serve -s build &
-                    sleep 10
-                    npx playwright test --reporter=html
-                '''
+            stage('E2E Tests') {
+                agent {
+                    docker {
+                        image 'mcr.microsoft.com/playwright:v1.57.0-jammy'
+                        reuseNode true
+                    }
+                }
+                steps {
+                    sh '''
+                        npm install serve
+                        node_modules/.bin/serve -s build &
+                        sleep 10
+                        npx playwright test --reporter=html
+                    '''
+                }
             }
         }
     }
