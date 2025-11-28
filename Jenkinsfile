@@ -13,6 +13,13 @@ pipeline {
                     ls -la
                     node --version
                     npm --version
+                    echo "=== WHERE AM I? ==="
+                    pwd
+                    ls -la
+                    echo "=== package.json used by CI ==="
+                    cat package.json
+                    echo "=== lock header used by CI ==="
+                    head -n 30 package-lock.json || true
                     npm ci
                     npm run build
                 '''
@@ -46,7 +53,7 @@ pipeline {
                 }
             }
             steps {
-               sh '''
+                sh '''
                     npm install serve
                     node_modules/.bin/serve -s build &
                     sleep 10
