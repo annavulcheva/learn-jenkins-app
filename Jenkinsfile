@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    environment {
-        BUILD_FILE_NAME = 'build'
-    }
     stages {
         stage('Build') {
             agent {
@@ -31,6 +28,7 @@ pipeline {
                     } else {
                         error "${path} does not exist."
                     }
+                }
             }
         }
     }
