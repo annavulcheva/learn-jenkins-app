@@ -29,7 +29,7 @@ pipeline {
                         error "${path} does not exist."
                     }
                 }
-                sh 'npm test'
+                sh 'npm run test:ci'
             }
         }
     }
