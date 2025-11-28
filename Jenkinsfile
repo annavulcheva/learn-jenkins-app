@@ -24,9 +24,13 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Running tests inside Docker container'
-                sh '''
-                    grep index.html $BUILD_FILE_NAME
-                '''
+                script {
+                    def path = "build/index.html"
+                    if (fileExists(path)) {
+                        echo "${path} exists."
+                    } else {
+                        error "${path} does not exist."
+                    }
             }
         }
     }
