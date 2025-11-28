@@ -18,7 +18,6 @@ pipeline {
                 '''
             }
         }
-    }
 
         stage('Run Tests') {
             parallel {
@@ -60,6 +59,7 @@ pipeline {
                 }
             }
         }
+    }
 
     post {
         always {
