@@ -35,7 +35,7 @@ pipeline {
                         error "${path} does not exist."
                     }
                 }
-                sh 'npm run test:ci'
+                sh 'npm test'
             }
         }
     }
