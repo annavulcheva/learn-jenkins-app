@@ -15,6 +15,7 @@ pipeline {
             }
             steps {
                 sh '''
+                    echo 'Building inside Docker container'
                     ls -la
                     node --version
                     npm --version
